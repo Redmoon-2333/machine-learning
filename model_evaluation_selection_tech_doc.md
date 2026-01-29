@@ -57,13 +57,19 @@ $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
 
 **Huber损失**：
 
-$$L_\delta(y, \hat{y}) = \begin{cases} \frac{1}{2}(y - \hat{y})^2, & |y - \hat{y}| \leq \delta \\\n\delta|y - \hat{y}| - \frac{1}{2}\delta^2, & |y - \hat{y}| > \delta \end{cases}$$
+$$L_\delta(y, \hat{y}) = \begin{cases}
+\frac{1}{2}(y - \hat{y})^2, & |y - \hat{y}| \leq \delta \\
+\delta|y - \hat{y}| - \frac{1}{2}\delta^2, & |y - \hat{y}| > \delta
+\end{cases}$$
 
 #### 2.2.2 分类任务损失函数
 
 **0-1损失**：
 
-$$L(y, \hat{y}) = \begin{cases} 0, & y = \hat{y} \\\n1, & y \neq \hat{y} \end{cases}$$
+$$L(y, \hat{y}) = \begin{cases}
+0, & y = \hat{y} \\
+1, & y \neq \hat{y}
+\end{cases}$$
 
 **交叉熵损失（Cross-Entropy Loss）**：
 
@@ -140,8 +146,8 @@ def categorical_cross_entropy(y_true, y_pred):
 
 # 示例用法
 # 回归任务
- y_true_reg = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
- y_pred_reg = np.array([1.2, 2.1, 2.9, 3.8, 5.1])
+y_true_reg = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+y_pred_reg = np.array([1.2, 2.1, 2.9, 3.8, 5.1])
 print("MSE:", mean_squared_error(y_true_reg, y_pred_reg))
 print("MAE:", mean_absolute_error(y_true_reg, y_pred_reg))
 
@@ -251,11 +257,27 @@ print(f"Test MAE: {test_mae:.4f}")
 
 **数学基础**：
 
-模型的泛化误差可以分解为：
+**结构风险最小化框架**：
 
-$$E(f; D) = E_{emp}(f; D) + \Omega(f)$$
+在结构风险最小化（SRM）框架下，模型的目标函数可以表示为：
 
-其中，$E_{emp}(f; D)$是经验误差，$\Omega(f)$是模型的复杂度惩罚项。
+$$R_{srm}(f) = R_{emp}(f) + \lambda \Omega(f)$$
+
+其中：
+- $R_{emp}(f)$ 是经验风险（经验误差）
+- $\Omega(f)$ 是模型复杂度惩罚项
+- $\lambda$ 是正则化参数
+
+**泛化误差的偏差-方差分解**：
+
+对于回归问题，泛化误差可以分解为：
+
+$$E[(y - \hat{f}(x))^2] = \text{Bias}^2[\hat{f}(x)] + \text{Var}[\hat{f}(x)] + \sigma^2$$
+
+其中：
+- $\text{Bias}^2[\hat{f}(x)] = (E[\hat{f}(x)] - f(x))^2$ 是偏差平方
+- $\text{Var}[\hat{f}(x)] = E[(\hat{f}(x) - E[\hat{f}(x)])^2]$ 是方差
+- $\sigma^2$ 是不可约误差（噪声）
 
 - **欠拟合**：模型复杂度过低，无法捕捉数据中的规律，导致经验误差和泛化误差都很高
 - **过拟合**：模型复杂度过高，过度捕捉训练数据中的噪声，导致经验误差很低但泛化误差很高
@@ -647,8 +669,6 @@ from sklearn.model_selection import cross_val_score, KFold, StratifiedKFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-
 # 加载数据集
 iris = load_iris()
 x, y = iris.data, iris.target

@@ -35,11 +35,17 @@
 
 **数学基础**：
 
-方差是衡量随机变量离散程度的统计量，定义为：
+方差是衡量随机变量离散程度的统计量。
 
-$$\text{Var}(X) = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2$$
+样本方差（无偏估计）：
+$$s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2$$
 
-其中，$X_i$是第$i$个样本的特征值，$\bar{X}$是特征的均值，$n$是样本数量。
+总体方差：
+$$\sigma^2 = \frac{1}{n} \sum_{i=1}^{n} (X_i - \mu)^2$$
+
+其中，$X_i$是第$i$个样本的特征值，$\bar{X}$（或$\mu$）是特征的均值，$n$是样本数量。
+
+注：在机器学习中，当使用样本数据估计总体方差时，通常使用无偏估计公式（除以n-1）。
 
 ### 2.2 实现步骤与关键参数说明
 
@@ -72,10 +78,12 @@ from sklearn.feature_selection import VarianceThreshold
 
 # 构造特征
 a = np.random.randn(100)  # 方差较大的特征
-print(f"Feature a variance: {np.var(a)}")
+print(f"Feature a variance (population): {np.var(a)}")  # 总体方差
+print(f"Feature a variance (sample): {np.var(a, ddof=1)}")  # 样本方差
 
 b = np.random.randn(100) * 0.1  # 方差较小的特征
-print(f"Feature b variance: {np.var(b)}")
+print(f"Feature b variance (population): {np.var(b)}")
+print(f"Feature b variance (sample): {np.var(b, ddof=1)}")
 
 # 构造特征矩阵
 X = np.vstack((a, b)).T
@@ -186,11 +194,17 @@ plt.show()
 
 **数学基础**：
 
-斯皮尔曼相关系数的计算公式为：
-
+**无结（无重复值）情况下的简化公式**：
 $$r_s = 1 - \frac{6\sum_{i=1}^{n} d_i^2}{n(n^2 - 1)}$$
 
 其中，$d_i$是第$i$个样本的两个变量的秩次之差，$n$是样本数量。
+
+**有结（有重复值）情况**：
+当数据中存在重复值时，上述公式不准确，应使用基于秩的皮尔逊相关系数计算方法：
+1. 将原始数据转换为秩次
+2. 计算秩次的皮尔逊相关系数
+
+注：在实际应用中，pandas的`corr(method='spearman')`会自动处理重复值的情况。
 
 斯皮尔曼相关系数的取值范围同样为$[-1, 1]$，含义与皮尔逊相关系数类似，但表示的是单调相关关系的强度。
 
@@ -295,14 +309,19 @@ PCA的核心步骤是对数据的协方差矩阵进行特征值分解：
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 # 生成三维随机数据
 X = np.random.randn(1000, 3)
 print(f"Original data shape: {X.shape}")
 
+# 数据标准化（PCA的重要预处理步骤）
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
 # 使用PCA降维，将三维数据降为两维
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X)
+X_pca = pca.fit_transform(X_scaled)
 print(f"PCA transformed data shape: {X_pca.shape}")
 
 # 可视化
@@ -336,9 +355,10 @@ noise = np.random.normal(0, 0.01, n)
 X = np.vstack((pc1 + pc2, pc1 - pc2, pc2 + noise)).T
 print(f"\nCorrelated data shape: {X.shape}")
 
-# PCA降维
+# PCA降维（对线性相关数据进行标准化）
+X_scaled = scaler.fit_transform(X)
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X)
+X_pca = pca.fit_transform(X_scaled)
 
 # 可视化
 fig = plt.figure(figsize=(12, 4))
@@ -366,7 +386,9 @@ print(f"Total explained variance: {sum(pca.explained_variance_ratio_)}")
 ```
 
 **代码解释**：
-1. 生成三维随机数据，并使用PCA将其降为二维
+1. 生成三维随机数据
+2. **使用StandardScaler进行数据标准化**——这是PCA的重要预处理步骤
+3. 使用PCA将标准化后的数据降为二维
 2. 可视化原始三维数据和降维后的二维数据
 3. 手动构建具有线性相关性的三维数据，其中包含一个主要方向、一个次要方向和一个噪声方向
 4. 对相关数据进行PCA降维

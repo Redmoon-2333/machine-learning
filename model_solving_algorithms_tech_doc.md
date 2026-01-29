@@ -492,7 +492,13 @@ plt.show()
 
 #### 2.6.1 动量法（Momentum）
 - 原理：引入动量项，累积之前的梯度方向，加速收敛并减少震荡
-- 更新公式：$v^{(t+1)} = \gamma v^{(t)} + \alpha \nabla L(w^{(t)})$, $w^{(t+1)} = w^{(t)} - v^{(t+1)}$
+- 更新公式：
+  $v^{(t+1)} = \gamma v^{(t)} + \nabla L(w^{(t)})$
+  $w^{(t+1)} = w^{(t)} - \alpha v^{(t+1)}$
+  
+  或（Nesterov动量形式）：
+  $v^{(t+1)} = \gamma v^{(t)} + \alpha \nabla L(w^{(t)} - \gamma v^{(t)})$
+  $w^{(t+1)} = w^{(t)} - v^{(t+1)}$
 - 优点：加速收敛，减少震荡，适合处理病态条件的目标函数
 
 #### 2.6.2 AdaGrad
@@ -538,15 +544,18 @@ $$\frac{\partial Loss_{L1}}{\partial \omega_{j}}=\frac{1}{n}\left(2\sum_{i=1}^{n
 
 其中sign函数定义为：
 
-$$\text{sign}(\omega_{j})=\begin{cases}1, & \omega_{j}>0 \\ 0, & \omega_{j}=0 \\ -1, & \omega_{j}<0\end{cases}$$
+$$\text{sign}(\omega_{j})=\begin{cases}1, & \omega_{j}>0 \\ -1, & \omega_{j}<0 \\ [-1, 1], & \omega_{j}=0\end{cases}$$
+
+**重要说明**：当 $\omega_j = 0$ 时，L1正则化不可导，此时使用次梯度（subgradient）概念。在实际优化中，通常使用软阈值（soft thresholding）或坐标下降法来处理这种情况。
 
 **参数更新**：
 
-$$\omega_{j}\leftarrow \omega_{j}-\alpha\left(\frac{2}{n}\sum_{i=1}^{n}x_{ij}(f(\boldsymbol{x}_{i})-y_{i})+\frac{c\lambda}{n}\cdot \text{sign}(\omega_{j})\right)$$
+$$\omega_{j}\leftarrow \omega_{j}-\alpha\left(\frac{\partial L_{MSE}}{\partial \omega_j}+\frac{\lambda}{n}\cdot \text{sign}(\omega_{j})\right)$$
 
 其中：
 - $\alpha$ 是学习率
-- $c$ 是样本数量（用于梯度计算）
+- $n$ 是样本数量
+- $\frac{\partial L_{MSE}}{\partial \omega_j}$ 是均方误差损失对参数 $\omega_j$ 的偏导数
 
 **特点**：
 - L1正则化能够产生稀疏解，即许多参数的值为0
@@ -733,7 +742,7 @@ beta_analytical_reg = analytical_solution_regularized(X, y)
 print(f"Parameters (β): {beta_analytical_reg.flatten()}")
 
 # 计算预测值
- y_pred = np.dot(X, beta_analytical)
+y_pred = np.dot(X, beta_analytical)
 
 # 计算均方误差
 mse = np.mean((y - y_pred) ** 2)
@@ -775,7 +784,7 @@ time_sgd = time.time() - time_start
 print(f"SGD time: {time_sgd:.4f} seconds")
 
 # 比较两种方法的误差
- y_pred_analytical = X_large.dot(beta_analytical_large)
+y_pred_analytical = X_large.dot(beta_analytical_large)
 y_pred_sgd = sgd.predict(X_large).reshape(-1, 1)
 mse_analytical = np.mean((y_large - y_pred_analytical) ** 2)
 mse_sgd = np.mean((y_large - y_pred_sgd) ** 2)
@@ -814,7 +823,7 @@ $$H_{ij}(w) = \frac{\partial^2 L(w)}{\partial w_i \partial w_j}$$
 
 对泰勒展开式求导并令其为零，得到参数更新公式：
 
-$$\theta_{k+1} = \theta_{k} - H^{-1}(\theta_{k}) \cdot \nabla L(\theta_{k})$$
+$$w^{(t+1)} = w^{(t)} - H^{-1}(w^{(t)}) \nabla L(w^{(t)})$$
 
 其中，$H^{-1}(\theta_{k})$ 表示损失函数 $L$ 海森矩阵的逆在点 $\theta_{k}$ 的取值。
 
@@ -1034,17 +1043,21 @@ plot_decision_boundary(w_bfgs, X, y, 'Decision Boundary (BFGS Method)')
 
 ### 5.1 算法性能比较
 
-| 算法 | 收敛速度 | 计算复杂度 | 内存消耗 | 适用模型 | 适用数据规模 |
-|------|----------|------------|----------|----------|--------------|
-| 批量梯度下降 | 慢 | $O(n)$ per iteration | 低 | 各种模型 | 中小规模 |
-| 随机梯度下降 | 快（但震荡） | $O(1)$ per iteration | 低 | 各种模型 | 大规模 |
-| 小批量梯度下降 | 中 | $O(b)$ per iteration | 低 | 各种模型 | 大规模 |
-| 解析解法 | 一次性 | $O(n^3)$ | 高 | 线性模型 | 小规模 |
-| 牛顿法 | 非常快 | $O(n^3)$ per iteration | 高 | 光滑模型 | 中小规模 |
-| BFGS | 快 | $O(n^2)$ per iteration | 中 | 光滑模型 | 中小规模 |
-| L-BFGS | 快 | $O(nm)$ per iteration | 低 | 光滑模型 | 大规模 |
+| 算法 | 收敛速度 | 每次迭代计算复杂度 | 内存消耗 | 适用模型 | 适用数据规模 |
+|------|----------|-------------------|----------|----------|--------------|
+| 批量梯度下降 | 慢 | $O(n \cdot m)$ | 低 | 各种模型 | 中小规模 |
+| 随机梯度下降 | 快（但震荡） | $O(m)$ | 低 | 各种模型 | 大规模 |
+| 小批量梯度下降 | 中 | $O(b \cdot m)$ | 低 | 各种模型 | 大规模 |
+| 解析解法 | 一次性 | $O(m^3)$ | 高 | 线性模型 | 小规模 |
+| 牛顿法 | 非常快 | $O(m^3)$ | 高 | 光滑模型 | 中小规模 |
+| BFGS | 快 | $O(m^2)$ | 中 | 光滑模型 | 中小规模 |
+| L-BFGS | 快 | $O(m \cdot k)$ | 低 | 光滑模型 | 大规模 |
 
-其中，$n$ 是特征数量，$b$ 是批量大小，$m$ 是 L-BFGS 存储的迭代次数。
+其中：
+- $n$：样本数量
+- $m$：特征数量
+- $b$：批量大小（batch size）
+- $k$：L-BFGS存储的历史梯度数量（通常 $k \ll m$）
 
 ### 5.2 算法选择指南
 
