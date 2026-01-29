@@ -12,15 +12,19 @@
 │   │   ├── 2_pearson.ipynb              # 皮尔逊相关系数
 │   │   ├── 3_spearman.ipynb             # 斯皮尔曼相关系数
 │   │   └── 4_pca.ipynb                  # PCA降维
+│   ├── metrics/                  # 模型评估指标
+│   │   ├── 1_classification_test.ipynb  # 分类评估指标测试
+│   │   └── 2_classification_report.py   # 分类评估报告生成
 │   ├── 1_fitting_test.py         # 欠拟合/过拟合演示
 │   ├── 2_regularization.py       # 正则化演示
 │   ├── 3_gradient_descent1.ipynb # 梯度下降法（一）
 │   └── 4_gradient_descent2.ipynb # 梯度下降法（二）
 ├── data/                         # 数据集
 │   └── advertising.csv           # 广告数据集
-├── feature_engineering_tech_doc.md              # 特征工程技术文档
-├── model_evaluation_selection_tech_doc.md      # 模型评估和选择技术文档
-└── model_solving_algorithms_tech_doc.md        # 模型求解算法技术文档
+├── 01_feature_engineering_tech_doc.md              # 特征工程技术文档
+├── 02_model_solving_algorithms_tech_doc.md        # 模型求解算法技术文档
+├── 03_model_evaluation_selection_tech_doc.md      # 模型评估和选择技术文档
+└── 04_model_evaluation_tech_doc.md               # 模型评估技术文档
 ```
 
 ## 主要内容
@@ -34,7 +38,7 @@
 - **斯皮尔曼相关系数法**：基于单调相关关系选择特征，适用于非线性关系或有序分类变量的场景
 - **PCA降维**：通过线性变换将高维数据映射到低维空间，适用于高维数据可视化和特征提取
 
-详细内容请参考：[特征工程技术文档](feature_engineering_tech_doc.md)
+详细内容请参考：[特征工程技术文档](01_feature_engineering_tech_doc.md)
 
 ### 2. 模型评估和选择
 
@@ -46,7 +50,7 @@
 - **正则化**：通过L1和L2正则化控制模型复杂度，防止过拟合
 - **交叉验证**：利用有限数据评估模型泛化能力，包括k折交叉验证等方法
 
-详细内容请参考：[模型评估和选择技术文档](model_evaluation_selection_tech_doc.md)
+详细内容请参考：[模型评估和选择技术文档](03_model_evaluation_selection_tech_doc.md)
 
 ### 3. 模型求解算法
 
@@ -60,7 +64,27 @@
 - **解析解法**：通过数学推导直接求解最优参数，适用于线性回归等模型
 - **牛顿法和拟牛顿法**：利用二阶导数信息加速收敛，包括BFGS、L-BFGS等
 
-详细内容请参考：[模型求解算法技术文档](model_solving_algorithms_tech_doc.md)
+详细内容请参考：[模型求解算法技术文档](02_model_solving_algorithms_tech_doc.md)
+
+### 4. 模型评估
+
+模型评估是机器学习流程中的关键环节，用于衡量模型的性能和泛化能力。
+
+- **分类评估指标**：
+  - 准确率（Accuracy）
+  - 精确率（Precision）
+  - 召回率（Recall）
+  - F1值（F1-Score）
+  - 混淆矩阵（Confusion Matrix）
+  - ROC曲线和AUC值
+- **回归评估指标**：
+  - 均方误差（MSE）
+  - 平均绝对误差（MAE）
+  - 均方根误差（RMSE）
+  - R²值（决定系数）
+- **模型评估报告**：生成详细的模型评估报告，包括各项指标的计算和可视化
+
+详细内容请参考：[模型评估技术文档](04_model_evaluation_tech_doc.md)
 
 ## 环境要求
 
@@ -85,6 +109,7 @@ pip install numpy matplotlib pandas scikit-learn seaborn jupyter
 ```bash
 python ch02_base/1_fitting_test.py
 python ch02_base/2_regularization.py
+python ch02_base/metrics/2_classification_report.py
 ```
 
 ### 运行Jupyter Notebook
@@ -122,9 +147,10 @@ jupyter notebook
 
 ## 技术文档索引
 
-- [特征工程技术文档](feature_engineering_tech_doc.md) - 详细介绍特征选择和降维方法
-- [模型评估和选择技术文档](model_evaluation_selection_tech_doc.md) - 详细介绍模型评估指标和方法
-- [模型求解算法技术文档](model_solving_algorithms_tech_doc.md) - 详细介绍各种优化算法
+- [特征工程技术文档](01_feature_engineering_tech_doc.md) - 详细介绍特征选择和降维方法
+- [模型求解算法技术文档](02_model_solving_algorithms_tech_doc.md) - 详细介绍各种优化算法
+- [模型评估和选择技术文档](03_model_evaluation_selection_tech_doc.md) - 详细介绍模型评估指标和方法
+- [模型评估技术文档](04_model_evaluation_tech_doc.md) - 详细介绍模型评估的具体实现和应用
 
 ## 许可证
 
