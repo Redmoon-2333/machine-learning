@@ -19,12 +19,20 @@
 │   ├── 2_regularization.py       # 正则化演示
 │   ├── 3_gradient_descent1.ipynb # 梯度下降法（一）
 │   └── 4_gradient_descent2.ipynb # 梯度下降法（二）
+├── ch03_knn/                     # 第三章 KNN算法
+│   ├── 1_classification_test.ipynb      # KNN分类测试
+│   ├── 2_regression_test.ipynb          # KNN回归测试
+│   ├── 3_scaler_test.ipynb              # 归一化与标准化测试
+│   ├── 4_heart_disease.py               # 心脏病预测案例
+│   └── heart_disease_model.pkl          # 保存的模型文件
 ├── data/                         # 数据集
-│   └── advertising.csv           # 广告数据集
+│   ├── advertising.csv           # 广告数据集
+│   └── heart.csv                 # 心脏病数据集
 ├── 01_feature_engineering_tech_doc.md              # 特征工程技术文档
 ├── 02_model_solving_algorithms_tech_doc.md        # 模型求解算法技术文档
 ├── 03_model_evaluation_selection_tech_doc.md      # 模型评估和选择技术文档
-└── 04_model_evaluation_tech_doc.md               # 模型评估技术文档
+├── 04_model_evaluation_tech_doc.md                # 模型评估技术文档
+└── 05_knn_algorithm_tech_doc.md                   # KNN算法技术文档
 ```
 
 ## 主要内容
@@ -86,6 +94,18 @@
 
 详细内容请参考：[模型评估技术文档](04_model_evaluation_tech_doc.md)
 
+### 5. KNN算法
+
+KNN（K-Nearest Neighbors）是一种经典的机器学习算法，既可以用于分类也可以用于回归任务。
+
+- **算法原理**：基于实例的学习，通过计算样本之间的距离进行预测
+- **距离度量**：欧氏距离、曼哈顿距离、闵可夫斯基距离、切比雪夫距离
+- **特征预处理**：归一化与标准化处理
+- **实际应用**：心脏病预测完整案例
+- **超参数调优**：使用网格搜索寻找最优参数组合
+
+详细内容请参考：[KNN算法技术文档](05_knn_algorithm_tech_doc.md)
+
 ## 环境要求
 
 - Python 3.7+
@@ -110,6 +130,7 @@ pip install numpy matplotlib pandas scikit-learn seaborn jupyter
 python ch02_base/1_fitting_test.py
 python ch02_base/2_regularization.py
 python ch02_base/metrics/2_classification_report.py
+python ch03_knn/4_heart_disease.py
 ```
 
 ### 运行Jupyter Notebook
@@ -151,6 +172,7 @@ jupyter notebook
 - [模型求解算法技术文档](02_model_solving_algorithms_tech_doc.md) - 详细介绍各种优化算法
 - [模型评估和选择技术文档](03_model_evaluation_selection_tech_doc.md) - 详细介绍模型评估指标和方法
 - [模型评估技术文档](04_model_evaluation_tech_doc.md) - 详细介绍模型评估的具体实现和应用
+- [KNN算法技术文档](05_knn_algorithm_tech_doc.md) - 详细介绍KNN算法原理、实现和应用
 
 ## 许可证
 

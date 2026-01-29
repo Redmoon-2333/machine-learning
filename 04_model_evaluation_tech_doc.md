@@ -168,7 +168,21 @@ weighted avg       0.70      0.70      0.69        10
 
 #### 2.2.7 ROC曲线与AUC
 
-**ROC曲线（Receiver Operating Characteristic Curve）**：
+**ROC曲线（Receiver Operating Characteristic Curve，受试者工作特征曲线）** 是评估二分类模型性能的重要工具，以假正例率（FPR）为横轴，以真正例率（TPR）为纵轴，展示不同阈值下模型的表现。
+
+**核心概念**：
+
+- **真正例率（TPR）**：实际为正例，被预测为正例的比例，即召回率。
+
+$$TPR = \frac{TP}{实际正例数} = \frac{TP}{TP + FN}$$
+
+- **假正例率（FPR）**：实际为负例，被预测为正例的比例。
+
+$$FPR = \frac{FP}{实际负例数} = \frac{FP}{FP + TN}$$
+
+- **阈值（Threshold）**：根据阈值将概率转换为类别标签。绘制ROC曲线时，从高到低调整阈值，计算每个阈值的TPR和FPR并绘制所有阈值的点，形成ROC曲线。
+
+**ROC曲线特点**：
 - 以假正例率（FPR）为横坐标，真正例率（TPR）为纵坐标
 - 反映了模型在不同阈值下的性能
 - 曲线越靠近左上角，模型性能越好
@@ -177,10 +191,6 @@ weighted avg       0.70      0.70      0.69        10
 - ROC曲线下方的面积
 - 取值范围为[0.5, 1]
 - 值越大，模型性能越好
-
-**数学公式**：
-$$FPR = \frac{FP}{FP + TN}$$
-$$TPR = \frac{TP}{TP + FN}$$
 
 **适用场景**：需要评估模型在不同阈值下的性能，特别是在二分类问题中
 
@@ -394,6 +404,15 @@ model.fit(X_train, y_train)
 # 5. 预测，生成报告
 y_pred = model.predict(X_test)
 print(classification_report(y_test, y_pred))
+
+# 6. 获取预测正类的概率值
+y_pred_proba = model.predict_proba(X_test)[:,1]
+print(y_pred_proba)
+
+# 7. 计算AUC值
+from sklearn.metrics import roc_auc_score
+auc = roc_auc_score(y_test, y_pred_proba)
+print(f"AUC: {auc:.4f}")
 ```
 
 ### 4.2 回归模型评估实现
