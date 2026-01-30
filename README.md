@@ -7,7 +7,7 @@
 - **系统化学习路径**：从数据预处理到模型部署的完整流程
 - **理论与实践结合**：每个概念都配有详细的数学推导和代码实现
 - **丰富的案例实战**：涵盖分类、回归、聚类等经典机器学习任务
-- **详细的技术文档**：6份完整的技术文档，深入讲解算法原理
+- **详细的技术文档**：9份完整的技术文档，深入讲解算法原理
 
 ## 📁 项目结构
 
@@ -40,6 +40,14 @@
 │   ├── 3_sgd_test.ipynb                 # 随机梯度下降测试
 │   └── 4_advertising.py                 # 广告投放效果预测
 │
+├── ch05_logistic_regression/     # 第五章：逻辑回归
+│   ├── 1_api_test.ipynb                 # 逻辑回归API测试
+│   ├── 2_heart_disease.py               # 心脏病预测（逻辑回归）
+│   └── 3_digit_recognizer.py            # 手写数字识别
+│
+├── ch06_perceptron/              # 第六章：感知机
+│   └── 1_logic_gate.py                  # 逻辑门实现
+│
 ├── data/                         # 数据集目录
 │   ├── advertising.csv           # 广告数据集
 │   ├── Advertising1.csv          # 广告数据集（扩展版）
@@ -50,7 +58,10 @@
 ├── 03_model_evaluation_selection_tech_doc.md      # 模型评估和选择技术文档
 ├── 04_model_evaluation_tech_doc.md                # 模型评估技术文档
 ├── 05_knn_algorithm_tech_doc.md                   # KNN算法技术文档
-└── 06_linear_regression_tech_doc.md               # 线性回归技术文档
+├── 06_linear_regression_tech_doc.md               # 线性回归技术文档
+├── 07_logistic_regression_tech_doc.md             # 逻辑回归技术文档
+├── 08_perceptron_tech_doc.md                      # 感知机技术文档
+└── 09_other_supervised_learning_tech_doc.md       # 其他监督学习算法技术文档
 ```
 
 ## 🎯 核心内容
@@ -179,7 +190,68 @@ KNN（K-Nearest Neighbors）是一种经典的基于实例的学习算法。
 - 模型评估与解释
 - 实际案例：广告投放效果预测
 
-📄 [查看线性回归技术文档](06_linear_regression_tech_doc.md)
+��� [查看线性回归技术文档](06_linear_regression_tech_doc.md)
+
+---
+
+### 7. 逻辑回归
+
+逻辑回归是一种经典的分类算法，虽然名字带有"回归"，但实际用于解决分类问题。
+
+**算法原理**：
+- 通过sigmoid函数将线性回归的输出映射到(0,1)区间
+- 输出表示样本属于某一类别的概率
+
+**核心内容**：
+- **Sigmoid函数**：将线性输出转换为概率值
+- **损失函数**：对数损失（Log Loss）/ 交叉熵损失
+- **决策边界**：线性决策边界
+- **多分类策略**：OvR（一对多）、OvO（一对一）
+- **实际案例**：心脏病预测、手写数字识别
+
+**应用场景**：
+- 二分类问题（垃圾邮件检测、疾病诊断）
+- 多分类问题（文本分类、图像分类）
+- 概率预测（风险评估、信用评分）
+
+📄 [查看逻辑回归技术文档](07_logistic_regression_tech_doc.md)
+
+---
+
+### 8. 感知机
+
+感知机是神经网络和深度学习的起源算法，是最简单的人工神经网络模型。
+
+**算法原理**：
+- 接收多个输入信号，输出一个信号
+- 通过学习调整权重和偏置
+
+**核心内容**：
+- **基本结构**：输入、权重、偏置、激活函数
+- **逻辑电路实现**：与门、或门、与非门
+- **感知机的局限性**：无法解决非线性问题（如异或门）
+- **多层感知机**：通过组合感知机解决非线性问题
+
+**历史意义**：
+- 1957年由Frank Rosenblatt提出
+- 奠定了神经网络的理论基础
+- 推动了深度学习的发展
+
+📄 [查看感知机技术文档](08_perceptron_tech_doc.md)
+
+---
+
+### 9. 其他监督学习算法（了解）
+
+介绍其他常用的监督学习算法，作为扩展学习内容。
+
+**主要内容**：
+- **朴素贝叶斯**：基于贝叶斯定理的概率分类算法
+- **决策树**：基于树结构的分类和回归算法
+- **支持向量机（SVM）**：基于最大间隔的分类算法
+- **集成学习**：随机森林、AdaBoost、GBDT等
+
+📄 [查看其他监督学习算法技术文档](09_other_supervised_learning_tech_doc.md)
 
 ---
 
@@ -224,6 +296,13 @@ python ch03_knn/4_heart_disease.py
 # 线性回归
 python ch04_linear_regression/2_gradient_descent.py
 python ch04_linear_regression/4_advertising.py
+
+# 逻辑回归
+python ch05_logistic_regression/2_heart_disease.py
+python ch05_logistic_regression/3_digit_recognizer.py
+
+# 感知机
+python ch06_perceptron/1_logic_gate.py
 ```
 
 ### 运行Jupyter Notebook
@@ -255,6 +334,11 @@ jupyter notebook
 4. **第四阶段：经典算法**
    - KNN算法：`05_knn_algorithm_tech_doc.md` + `ch03_knn/`
    - 线性回归：`06_linear_regression_tech_doc.md` + `ch04_linear_regression/`
+   - 逻辑回归：`07_logistic_regression_tech_doc.md` + `ch05_logistic_regression/`
+   - 感知机：`08_perceptron_tech_doc.md` + `ch06_perceptron/`
+
+5. **第五阶段：扩展学习**
+   - 其他监督学习算法：`09_other_supervised_learning_tech_doc.md`
 
 ### 进阶学习
 
@@ -303,6 +387,24 @@ jupyter notebook
 3. 多种求解方法的比较
 4. 模型解释与业务洞察
 
+### 手写数字识别案例
+
+`ch05_logistic_regression/3_digit_recognizer.py` 展示了逻辑回归在多分类问题中的应用：
+
+1. MNIST数据集加载
+2. 多分类策略（OvR）
+3. 模型训练与评估
+4. 分类结果可视化
+
+### 逻辑门实现
+
+`ch06_perceptron/1_logic_gate.py` 展示了感知机的基本应用：
+
+1. 与门（AND）、或门（OR）、与非门（NAND）的实现
+2. 感知机权重和偏置的理解
+3. 异或门（XOR）的多层感知机实现
+4. 感知机的局限性演示
+
 ---
 
 ## 📚 技术文档索引
@@ -315,6 +417,9 @@ jupyter notebook
 | [模型评估技术文档](04_model_evaluation_tech_doc.md) | 评估实践指南 | 混淆矩阵、ROC曲线、AUC |
 | [KNN算法技术文档](05_knn_algorithm_tech_doc.md) | KNN算法详解 | 距离度量、超参数调优 |
 | [线性回归技术文档](06_linear_regression_tech_doc.md) | 线性回归详解 | 正规方程、梯度下降、MLE |
+| [逻辑回归技术文档](07_logistic_regression_tech_doc.md) | 逻辑回归详解 | Sigmoid函数、交叉熵、多分类 |
+| [感知机技术文档](08_perceptron_tech_doc.md) | 感知机详解 | 逻辑门、多层感知机 |
+| [其他监督学习算法](09_other_supervised_learning_tech_doc.md) | 扩展算法 | 朴素贝叶斯、决策树、SVM |
 
 ---
 
