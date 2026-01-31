@@ -411,7 +411,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
 
 # 1.加载数据集
-data = pd.read_csv('../data/train.csv')
+data = pd.read_csv('./data/train.csv')
 
 # 测试图像（可选，用于可视化）
 # test_image = data.iloc[10,1:].values
@@ -527,15 +527,15 @@ preprocessor = ColumnTransformer(
 )
 
 # 执行特征转换
-x_train = preprocessor.fit_transform(X_train)  # 计算训练集的统计信息并进行转换
-x_test = preprocessor.transform(X_test)  # 使用训练集计算的信息对测试集进行转换
+X_train = preprocessor.fit_transform(X_train)  # 计算训练集的统计信息并进行转换
+X_test = preprocessor.transform(X_test)  # 使用训练集计算的信息对测试集进行转换
 
 # 4. 模型定义和训练
 model = LogisticRegression()
-model.fit(x_train, y_train)
+model.fit(X_train, y_train)
 
 # 5. 准确率计算，评估模型
-accuracy = model.score(x_test, y_test)
+accuracy = model.score(X_test, y_test)
 print(f"Accuracy: {accuracy:.4f}")
 ```
 
